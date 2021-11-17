@@ -1,0 +1,115 @@
+service: notes-api
+
+plugins:
+  - serverless-jetpack
+  - serverless-plugin-reducer
+  - serverless-scriptable-plugin
+
+# layers:
+#   Deps:
+#     path: ../deps
+#     jetpack:
+#       roots:
+#         # Instruct Jetpack to review and exclude devDependencies originating
+#         # from this `package.json` directory.
+#         - ".."
+#         - "."
+#         - "../math"
+
+package:
+  individually: true
+  include:
+    - "build/**"
+    # - "package.json"
+    - "!{../,}{**/,}node_modules/{@*/*,*}/CHANGELOG.md"
+    - "!{../,}{**/,}node_modules/{@*/*,*}/README.md"
+
+custom:
+  jetpack:
+    base: ".."
+    concurrency: 4
+    preInclude:
+      - "!**"
+    collapsed:
+      bail: true
+
+  scriptHooks:
+    before:package:createDeploymentArtifacts: npm run build
+    before:package:function:package: npm run build
+    before:jetpack:package:package: npm run build
+  # localstack:
+  #   stages:
+  #     # list of stages for which the plugin should be enabled
+  #     - local
+  #   host: http://localhost # optional - LocalStack host to connect to
+  #   edgePort: 4566 # optional - LocalStack edge port to connect to
+  #   autostart: true # optional - Start LocalStack in Docker on Serverless deploy
+  #   docker:
+  #     # Enable this flag to run "docker ..." commands as sudo
+  #     sudo: False
+  # stages: local
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  stage: ${opt:stage, 'dev'}
+  lambdaHashingVersion: 20201221
+  region: ${opt:region, 'us-east-1'}
+  memorySize: 128
+  versionFunctions: false
+  timeout: 3
+  environment:
+    DB_DIALECT: "postgres"
+    DB_NAME: "abalustre"
+    DB_USERNAME: "postgres"
+    DB_PASSWORD: "postgres"
+    DB_HOST: "postgres"
+    DB_PORT: "5432"
+
+functions:
+  create:
+    handler: ./build/create.handler
+    description: "create note"
+    events:
+      - http:
+          path: /notes
+          method: post
+    # layers:
+    #   - { Ref: DepsLambdaLayer }
+
+  get:
+    handler: ./build/get.handler
+    description: "get note"
+    events:
+      - http:
+          path: /notes
+          method: get
+    # layers:
+    #   - { Ref: DepsLambdaLayer }
+
+  update:
+    handler: ./build/update.handler
+    description: "update note"
+    events:
+      - http:
+          path: /notes/{noteID}
+          method: put
+    # layers:
+    #   - { Ref: DepsLambdaLayer }
+
+  delete:
+    handler: ./build/delete.handler
+    description: "delete note"
+    events:
+      - http:
+          path: /notes/{noteID}
+          method: delete
+    # layers:
+    #   - { Ref: DepsLambdaLayer }
+
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:service}-${self:provider.stage}

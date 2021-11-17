@@ -1,0 +1,11 @@
+{
+  "files": [],
+  "references": [
+    { "path": "notes" },
+    { "path": "math" },
+    { "path": "helpers" }
+  ],
+  "compilerOptions": {
+    "outDir": "build"
+  }
+}
