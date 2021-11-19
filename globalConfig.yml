@@ -1,0 +1,36 @@
+plugins:
+  - serverless-jetpack
+  - serverless-plugin-reducer
+  - serverless-scriptable-plugin
+
+layers:
+  Deps:
+    path: ../layers
+    jetpack:
+      roots:
+        - "../layers/nodejs"
+
+jetpack:
+  base: ".."
+  concurrency: 4
+  preInclude:
+    - "!**"
+  collapsed:
+    bail: true
+
+scriptHooks:
+  before:package:createDeploymentArtifacts: npm run build
+  before:package:function:package: npm run build
+  before:jetpack:package:package: npm run build
+
+package:
+  individually: true
+  include:
+    - "!**/node_modules/aws-sdk/**"
+    - "!../node_modules/**/*.ts"
+    - "!../node_modules/**/.serverless/**"
+    - "!../node_modules/**/src/**"
+    - "!**/node_modules/{@*/*,*}/*.md"
+    - "build/*.js"
+    # - "!{../,}{**/,}node_modules/{@*/*,*}/CHANGELOG.md"
+    # - "!{../,}{**/,}node_modules/{@*/*,*}/README.md"

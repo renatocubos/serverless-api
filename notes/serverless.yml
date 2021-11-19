@@ -1,53 +1,23 @@
 service: notes-api
 
-plugins:
-  - serverless-jetpack
-  - serverless-plugin-reducer
-  - serverless-scriptable-plugin
+projectDir: ../
 
-# layers:
-#   Deps:
-#     path: ../deps
-#     jetpack:
-#       roots:
-#         # Instruct Jetpack to review and exclude devDependencies originating
-#         # from this `package.json` directory.
-#         - ".."
-#         - "."
-#         - "../math"
+resources:
+  Resources:
+    ApiGatewayRestApi:
+      Type: AWS::ApiGateway::RestApi
+      Properties:
+        Name: ${self:service}-${self:provider.stage}
 
-package:
-  individually: true
-  include:
-    - "build/**"
-    # - "package.json"
-    - "!{../,}{**/,}node_modules/{@*/*,*}/CHANGELOG.md"
-    - "!{../,}{**/,}node_modules/{@*/*,*}/README.md"
+plugins: ${file(../globalConfig.yml):plugins}
+
+layers: ${file(../globalConfig.yml):layers}
+
+package: ${file(../globalConfig.yml):package}
 
 custom:
-  jetpack:
-    base: ".."
-    concurrency: 4
-    preInclude:
-      - "!**"
-    collapsed:
-      bail: true
-
-  scriptHooks:
-    before:package:createDeploymentArtifacts: npm run build
-    before:package:function:package: npm run build
-    before:jetpack:package:package: npm run build
-  # localstack:
-  #   stages:
-  #     # list of stages for which the plugin should be enabled
-  #     - local
-  #   host: http://localhost # optional - LocalStack host to connect to
-  #   edgePort: 4566 # optional - LocalStack edge port to connect to
-  #   autostart: true # optional - Start LocalStack in Docker on Serverless deploy
-  #   docker:
-  #     # Enable this flag to run "docker ..." commands as sudo
-  #     sudo: False
-  # stages: local
+  jetpack: ${file(../globalConfig.yml):jetpack}
+  scriptHooks: ${file(../globalConfig.yml):scriptHooks}
 
 provider:
   name: aws
@@ -58,7 +28,13 @@ provider:
   memorySize: 128
   versionFunctions: false
   timeout: 3
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+      Resource: "arn:aws:lambda:us-east-1:*:*"
   environment:
+    STAGE: ${opt:stage, 'dev'}
     DB_DIALECT: "postgres"
     DB_NAME: "abalustre"
     DB_USERNAME: "postgres"
@@ -74,8 +50,8 @@ functions:
       - http:
           path: /notes
           method: post
-    # layers:
-    #   - { Ref: DepsLambdaLayer }
+    layers:
+      - { Ref: DepsLambdaLayer }
 
   get:
     handler: ./build/get.handler
@@ -84,8 +60,8 @@ functions:
       - http:
           path: /notes
           method: get
-    # layers:
-    #   - { Ref: DepsLambdaLayer }
+    layers:
+      - { Ref: DepsLambdaLayer }
 
   update:
     handler: ./build/update.handler
@@ -94,8 +70,8 @@ functions:
       - http:
           path: /notes/{noteID}
           method: put
-    # layers:
-    #   - { Ref: DepsLambdaLayer }
+    layers:
+      - { Ref: DepsLambdaLayer }
 
   delete:
     handler: ./build/delete.handler
@@ -104,12 +80,5 @@ functions:
       - http:
           path: /notes/{noteID}
           method: delete
-    # layers:
-    #   - { Ref: DepsLambdaLayer }
-
-resources:
-  Resources:
-    ApiGatewayRestApi:
-      Type: AWS::ApiGateway::RestApi
-      Properties:
-        Name: ${self:service}-${self:provider.stage}
+    layers:
+      - { Ref: DepsLambdaLayer }

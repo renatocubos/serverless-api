@@ -3,11 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "build/index.js",
+  "dependencies": {
+    "helpers": "1.0.0"
+  },
   "devDependencies": {},
   "scripts": {
     "build": "tsc",
     "deploy:dev": "sls deploy --verbose --stage dev",
-    "deploy:prod": "sls deploy --verbose --stage prod"
+    "deploy:prod": "sls deploy --verbose --stage prod",
+    "deploy:function": "sls deploy function --stage dev -f"
   },
   "author": "",
   "license": "ISC"

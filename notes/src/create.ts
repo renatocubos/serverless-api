@@ -1,14 +1,37 @@
-import type { APIGatewayProxyHandler } from "aws-lambda/trigger/api-gateway-proxy";
 import { randomUUID } from "crypto";
-import { createHandler, response, validateBody } from "helpers";
+import type { LambdaHandler } from "helpers";
+import { createHandler } from "helpers";
+import Joi from "joi";
+import type { BaseNote } from "./note";
 
-export const handler: APIGatewayProxyHandler = createHandler(async (event) => {
+const joi = Joi.object({
+  title: Joi.string(),
+  description: Joi.string().required(),
+});
+
+async function validateBody(body: string | null) {
+  try {
+    const obj = JSON.parse(body ?? "");
+    await joi.validateAsync(obj);
+
+    return obj as BaseNote;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export const createNote: LambdaHandler = async (event) => {
   const body = await validateBody(event.body);
 
-  console.log("teste");
-  return response(200, {
-    id: randomUUID(),
-    ...body,
-    createdAt: new Date(),
-  });
-});
+  console.log("teste123");
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      id: randomUUID(),
+      ...body,
+      createdAt: new Date(),
+    }),
+  };
+};
+
+export const handler = createHandler(createNote);

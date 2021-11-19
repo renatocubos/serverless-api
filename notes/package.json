@@ -6,12 +6,12 @@
   "scripts": {
     "build": "tsc",
     "deploy:dev": "sls deploy --verbose --stage dev",
-    "deploy:prod": "sls deploy --verbose --stage prod"
+    "deploy:prod": "sls deploy --verbose --stage prod",
+    "deploy:function": "sls deploy function --stage dev -f"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "joi": "^17.4.2",
     "math": "^1.0.0",
     "helpers": "1.0.0"
   }

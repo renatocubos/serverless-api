@@ -20,14 +20,19 @@
   "rules": {
     "indent": ["error", 2],
     "no-var": "warn",
-    "no-duplicate-imports": "error",
     "callback-return": "error",
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "double"],
     "semi": ["error", "always"],
     "prefer-template": "error",
+    "@typescript-eslint/no-duplicate-imports": "error",
     "@typescript-eslint/no-var-requires": "warn",
     "@typescript-eslint/no-floating-promises": "error",
-    "@typescript-eslint/consistent-type-imports": "warn"
+    "@typescript-eslint/consistent-type-imports": "warn",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ]
   }
 }
