@@ -1,5 +1,6 @@
 import type { APIGatewayProxyHandler } from "aws-lambda";
-import { validateBody, createHandler, response } from "helpers";
+import { createHandler, response } from "helpers";
+import { validateBody } from "./validate";
 
 export const handler: APIGatewayProxyHandler = createHandler(async (event) => {
   const id = event.pathParameters?.id;
