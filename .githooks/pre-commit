@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+
+npx lint-staged
+sed -i -e 's/http:\/\//https:\/\//g' package-lock.json

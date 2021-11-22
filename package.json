@@ -14,7 +14,8 @@
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
     "eslint:check": "eslint '**/*.{t,j}s'",
     "typecheck": "npx tsc --noEmit",
-    "prepare": "tsc -b tsconfig.build.json"
+    "prepare": "tsc -b tsconfig.build.json",
+    "postinstall": "git config core.hooksPath ./.githooks"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -36,6 +37,7 @@
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
+    "lint-staged": "^12.1.2",
     "prettier": "^2.4.1",
     "serverless": "^2.65.0",
     "serverless-jetpack": "^0.11.1",
