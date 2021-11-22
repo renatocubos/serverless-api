@@ -2,6 +2,7 @@ plugins:
   - serverless-jetpack
   - serverless-plugin-reducer
   - serverless-scriptable-plugin
+  - serverless-offline
 
 jetpack:
   base: ".."
@@ -25,5 +26,3 @@ package:
     - "!../node_modules/**/src/**"
     - "!**/node_modules/{@*/*,*}/*.md"
     - "build/*.js"
-    # - "!{../,}{**/,}node_modules/{@*/*,*}/CHANGELOG.md"
-    # - "!{../,}{**/,}node_modules/{@*/*,*}/README.md"
