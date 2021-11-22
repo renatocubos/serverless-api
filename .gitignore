@@ -5,3 +5,4 @@ node_modules
 .serverless
 build
 tsconfig.tsbuildinfo
+layers/nodejs/package.json
