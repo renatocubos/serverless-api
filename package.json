@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "layer:create": "node scripts/createLayer.js",
-    "layer:deploy": "(cd layers && sls deploy)",
+    "layer:deploy": "npm run layer:create && (cd layers && sls deploy)",
     "predeploy:dev": "npm run layer:deploy",
     "predeploy:all:dev": "npm run layer:deploy",
     "deploy:prod": "npm run prepare && npm run deploy:prod -w",
