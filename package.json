@@ -45,11 +45,17 @@
     "serverless": "^2.65.0",
     "serverless-jetpack": "^0.11.1",
     "serverless-localstack": "^0.4.35",
-    "serverless-offline": "^8.2.0",
+    "serverless-offline": "^8.3.0",
     "serverless-plugin-reducer": "^3.2.4",
     "serverless-scriptable-plugin": "^1.2.2",
     "serverless-sequelize-migrations": "^1.1.1",
     "typescript": "4.2.4"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "bash -c 'npm run typecheck'",
+      "npm run eslint:fix"
+    ]
   },
   "dependencies": {
     "aws-lambda": "^1.0.7",
