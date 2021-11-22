@@ -6,6 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "deploy:prod": "sls deploy --verbose --stage prd",
+    "deploy:all:prod": "npm run deploy:prod --workspaces --if-present",
+    "deploy:all:dev": "npm run deploy:dev --workspaces --if-present",
     "deploy:dev": "npm run prepare && npm run deploy:dev -w",
     "localstack": "docker run --rm -it -e \"DEBUG=1\" -e \"SERVICES=cloudformation,swf,serverless\" -p 4566:4566 -p 4571:4571 localstack/localstack",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
