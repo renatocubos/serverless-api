@@ -11,8 +11,6 @@ resources:
 
 plugins: ${file(../globalConfig.yml):plugins}
 
-layers: ${file(../globalConfig.yml):layers}
-
 package: ${file(../globalConfig.yml):package}
 
 custom:
@@ -51,7 +49,7 @@ functions:
           path: /notes
           method: post
     layers:
-      - { Ref: DepsLambdaLayer }
+      - ${cf:layers-dev.DepsLayerExport}
 
   get:
     handler: ./build/get.handler
@@ -61,7 +59,7 @@ functions:
           path: /notes
           method: get
     layers:
-      - { Ref: DepsLambdaLayer }
+      - ${cf:layers-dev.DepsLayerExport}
 
   update:
     handler: ./build/update.handler
@@ -71,7 +69,7 @@ functions:
           path: /notes/{noteID}
           method: put
     layers:
-      - { Ref: DepsLambdaLayer }
+      - ${cf:layers-dev.DepsLayerExport}
 
   delete:
     handler: ./build/delete.handler
@@ -81,4 +79,4 @@ functions:
           path: /notes/{noteID}
           method: delete
     layers:
-      - { Ref: DepsLambdaLayer }
+      - ${cf:layers-dev.DepsLayerExport}

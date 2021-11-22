@@ -11,8 +11,6 @@ resources:
 
 plugins: ${file(../globalConfig.yml):plugins}
 
-layers: ${file(../globalConfig.yml):layers}
-
 package: ${file(../globalConfig.yml):package}
 
 custom:
@@ -38,4 +36,4 @@ functions:
           path: /sum/{a}/{b}
           method: get
     layers:
-      - { Ref: DepsLambdaLayer }
+      - ${cf:layers-dev.DepsLayerExport}

@@ -3,13 +3,6 @@ plugins:
   - serverless-plugin-reducer
   - serverless-scriptable-plugin
 
-layers:
-  Deps:
-    path: ../layers
-    jetpack:
-      roots:
-        - "../layers/nodejs"
-
 jetpack:
   base: ".."
   concurrency: 4

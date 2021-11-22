@@ -1,0 +1,27 @@
+service: layers
+
+projectDir: ../
+
+plugins: ${file(../globalConfig.yml):plugins}
+custom:
+  jetpack: ${file(../globalConfig.yml):jetpack}
+
+package: ${file(../globalConfig.yml):package}
+
+provider:
+  name: aws
+
+layers:
+  Deps:
+    path: ./
+    jetpack:
+      roots:
+        - "./nodejs"
+
+resources:
+  Outputs:
+    DepsLayerExport:
+      Value:
+        Ref: DepsLambdaLayer
+      Export:
+        Name: DepsLambdaLayer
