@@ -6,15 +6,20 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "layer:create": "node scripts/createLayer.js",
-    "deploy:prod": "npm run layer:create && npm run prepare && npm run deploy:prod -w",
-    "deploy:dev": "npm run layer:create && npm run prepare && npm run deploy:dev -w",
-    "deploy:all:prod": "npm run layer:create && npm run deploy:prod --workspaces --if-present",
-    "deploy:all:dev": "npm run layer:create && npm run deploy:dev --workspaces --if-present",
+    "layer:deploy": "npm run layer:create && (cd layers && sls deploy)",
+    "sls:package": "npm run sls:package -w",
+    "predeploy:dev": "npm run layer:deploy",
+    "predeploy:all:dev": "npm run layer:deploy",
+    "deploy:prod": "npm run prepare && npm run deploy:prod -w",
+    "deploy:dev": "npm run prepare && npm run deploy:dev -w",
+    "deploy:all:prod": "npm run deploy:prod --workspaces --if-present",
+    "deploy:all:dev": "npm run deploy:dev --workspaces --if-present",
     "localstack": "docker run --rm -it -e \"DEBUG=1\" -e \"SERVICES=cloudformation,swf,serverless\" -p 4566:4566 -p 4571:4571 localstack/localstack",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
     "eslint:check": "eslint '**/*.{t,j}s'",
     "typecheck": "npx tsc --noEmit",
-    "prepare": "tsc -b tsconfig.build.json"
+    "prepare": "tsc -b tsconfig.build.json",
+    "postinstall": "git config core.hooksPath ./.githooks"
   },
   "engines": {
     "node": ">=14.0.0"
@@ -23,9 +28,9 @@
   "author": "",
   "license": "ISC",
   "workspaces": [
-    "notes",
-    "math",
-    "helpers"
+    "packages/helpers",
+    "packages/notes",
+    "packages/math"
   ],
   "devDependencies": {
     "@types/aws-lambda": "^8.10.85",
@@ -36,15 +41,22 @@
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
+    "lint-staged": "^12.1.2",
     "prettier": "^2.4.1",
     "serverless": "^2.65.0",
     "serverless-jetpack": "^0.11.1",
     "serverless-localstack": "^0.4.35",
-    "serverless-offline": "^8.2.0",
+    "serverless-offline": "^8.3.0",
     "serverless-plugin-reducer": "^3.2.4",
     "serverless-scriptable-plugin": "^1.2.2",
     "serverless-sequelize-migrations": "^1.1.1",
     "typescript": "4.2.4"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "bash -c 'npm run typecheck'",
+      "npm run eslint:fix"
+    ]
   },
   "dependencies": {
     "aws-lambda": "^1.0.7",

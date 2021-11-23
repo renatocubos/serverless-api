@@ -1,6 +1,6 @@
 {
-  "extends": "../tsconfig.json",
-  // "references": [{ "path": "path/to/another/package" }],
+  "extends": "../../tsconfig.json",
+  "references": [{ "path": "../math" }],
   "compilerOptions": {
     "rootDir": "src" /* Specify the root folder within your source files. */,
     "outDir": "./build" /* Specify an output folder for all emitted files. */

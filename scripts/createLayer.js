@@ -17,6 +17,10 @@ async function createLayer() {
 }
 
 createLayer().catch((e) => {
-  console.error(error);
+  if (e.code === "EEXIST") {
+    console.error("symlink already exists");
+  } else {
+    console.error(e);
+  }
   process.exit(1);
 });

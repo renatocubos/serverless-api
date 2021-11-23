@@ -2,16 +2,10 @@ plugins:
   - serverless-jetpack
   - serverless-plugin-reducer
   - serverless-scriptable-plugin
-
-layers:
-  Deps:
-    path: ../layers
-    jetpack:
-      roots:
-        - "../layers/nodejs"
+  - serverless-offline
 
 jetpack:
-  base: ".."
+  base: "../.."
   concurrency: 4
   preInclude:
     - "!**"
@@ -27,10 +21,8 @@ package:
   individually: true
   include:
     - "!**/node_modules/aws-sdk/**"
-    - "!../node_modules/**/*.ts"
-    - "!../node_modules/**/.serverless/**"
-    - "!../node_modules/**/src/**"
-    - "!**/node_modules/{@*/*,*}/*.md"
+    - "!../../node_modules/**/*.ts"
+    - "!../../node_modules/**/.serverless/**"
+    - "!../../node_modules/**/src/**"
+    - "!**/**/node_modules/{@*/*,*}/*.md"
     - "build/*.js"
-    # - "!{../,}{**/,}node_modules/{@*/*,*}/CHANGELOG.md"
-    # - "!{../,}{**/,}node_modules/{@*/*,*}/README.md"

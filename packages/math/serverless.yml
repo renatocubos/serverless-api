@@ -1,6 +1,6 @@
 service: math-api
 
-projectDir: ../
+projectDir: ../../
 
 resources:
   Resources:
@@ -9,15 +9,13 @@ resources:
       Properties:
         Name: ${self:service}-${self:provider.stage}
 
-plugins: ${file(../globalConfig.yml):plugins}
+plugins: ${file(../../globalConfig.yml):plugins}
 
-layers: ${file(../globalConfig.yml):layers}
-
-package: ${file(../globalConfig.yml):package}
+package: ${file(../../globalConfig.yml):package}
 
 custom:
-  jetpack: ${file(../globalConfig.yml):jetpack}
-  scriptHooks: ${file(../globalConfig.yml):scriptHooks}
+  jetpack: ${file(../../globalConfig.yml):jetpack}
+  scriptHooks: ${file(../../globalConfig.yml):scriptHooks}
 
 provider:
   name: aws
@@ -38,4 +36,4 @@ functions:
           path: /sum/{a}/{b}
           method: get
     layers:
-      - { Ref: DepsLambdaLayer }
+      - ${cf:layers-dev.DepsLayerExport}

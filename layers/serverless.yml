@@ -1,0 +1,46 @@
+service: layers
+
+projectDir: ../
+
+custom:
+  jetpack:
+  base: ".."
+  concurrency: 4
+  preInclude:
+    - "!**"
+  collapsed:
+    bail: true
+
+plugins:
+  - serverless-jetpack
+  - serverless-plugin-reducer
+  - serverless-scriptable-plugin
+  - serverless-offline
+
+package:
+  individually: true
+  include:
+    - "!**/node_modules/aws-sdk/**"
+    - "!../node_modules/**/*.ts"
+    - "!../node_modules/**/.serverless/**"
+    - "!../node_modules/**/src/**"
+    - "!**/node_modules/{@*/*,*}/*.md"
+    - "build/*.js"
+
+provider:
+  name: aws
+
+layers:
+  Deps:
+    path: ./
+    jetpack:
+      roots:
+        - "./nodejs"
+
+resources:
+  Outputs:
+    DepsLayerExport:
+      Value:
+        Ref: DepsLambdaLayer
+      Export:
+        Name: DepsLambdaLayer
