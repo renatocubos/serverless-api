@@ -2,11 +2,30 @@ service: layers
 
 projectDir: ../
 
-plugins: ${file(../globalConfig.yml):plugins}
 custom:
-  jetpack: ${file(../globalConfig.yml):jetpack}
+  jetpack:
+  base: ".."
+  concurrency: 4
+  preInclude:
+    - "!**"
+  collapsed:
+    bail: true
 
-package: ${file(../globalConfig.yml):package}
+plugins:
+  - serverless-jetpack
+  - serverless-plugin-reducer
+  - serverless-scriptable-plugin
+  - serverless-offline
+
+package:
+  individually: true
+  include:
+    - "!**/node_modules/aws-sdk/**"
+    - "!../node_modules/**/*.ts"
+    - "!../node_modules/**/.serverless/**"
+    - "!../node_modules/**/src/**"
+    - "!**/node_modules/{@*/*,*}/*.md"
+    - "build/*.js"
 
 provider:
   name: aws

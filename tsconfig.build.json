@@ -1,9 +1,9 @@
 {
   "files": [],
   "references": [
-    { "path": "notes" },
-    { "path": "math" },
-    { "path": "helpers" }
+    { "path": "packages/notes" },
+    { "path": "packages/math" },
+    { "path": "packages/helpers" }
   ],
   "compilerOptions": {
     "outDir": "build"
