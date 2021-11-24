@@ -16,7 +16,7 @@ const invokeLambda = async (functionName: string, payload?: unknown) => {
     return JSON.parse(response.Payload as string);
   } catch (e) {
     console.log("error", e);
-    return Error(e);
+    return Error(JSON.stringify(e));
   }
 };
 

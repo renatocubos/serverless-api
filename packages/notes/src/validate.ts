@@ -13,6 +13,6 @@ export async function validateBody(body: string | null) {
 
     return obj as BaseNote;
   } catch (error) {
-    throw new Error(error.message);
+    throw new Error(JSON.stringify(error));
   }
 }

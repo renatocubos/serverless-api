@@ -1,7 +1,9 @@
 import type { PoolClient } from "pg";
 import { Pool } from "pg";
 
-export class Database {
+export type DBClient = PoolClient;
+
+export class Postgres {
   private readonly pool: Pool;
   private client?: PoolClient;
 
@@ -13,13 +15,13 @@ export class Database {
       connectionTimeoutMillis: 10000,
     });
 
-    this.pool.on("error", (err) => {
+    this.pool.on("error", err => {
       console.error("Unexpected error on idle client", err);
       process.exit(1);
     });
   }
 
-  async connect() {
+  async connect(): Promise<DBClient> {
     this.client = await this.pool.connect();
     return this.client;
   }
@@ -28,5 +30,10 @@ export class Database {
     if (this.client) {
       this.client.release();
     }
+  }
+
+  async end() {
+    this.release();
+    await this.pool.end();
   }
 }

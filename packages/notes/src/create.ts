@@ -1,20 +1,27 @@
-import { randomUUID } from "crypto";
-import type { LambdaHandler } from "helpers";
-import { createHandler } from "helpers";
+import type { APIGatewayProxyEvent } from "aws-lambda";
+import type { DBClient } from "helpers";
+import { response, createHandler, withDB } from "helpers";
 import { validateBody } from "./validate";
 
-export const createNote: LambdaHandler = async (event) => {
-  const body = await validateBody(event.body);
+export async function createNote(db: DBClient, event: APIGatewayProxyEvent) {
+  const data = await validateBody(event.body);
 
-  console.log("teste123");
+  const result = await db.query<{ id: string }>(
+    "INSERT INTO notes (title, description) VALUES ($1, $2) RETURNING id",
+    [data.title, data.description]
+  );
+
   return {
-    statusCode: 200,
-    body: JSON.stringify({
-      id: randomUUID(),
-      ...body,
-      createdAt: new Date(),
-    }),
+    id: result.rows[0]?.id,
+    ...data,
+    createdAt: new Date(),
   };
-};
+}
 
-export const handler = createHandler(createNote);
+export const handler = createHandler(
+  withDB(async (event, context) => {
+    const note = await createNote(context.db, event);
+
+    return response(201, note);
+  })
+);
