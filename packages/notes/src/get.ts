@@ -1,6 +1,6 @@
 import { Lambda } from "aws-sdk";
+import { createHandler, response, database as db } from "helpers";
 const lambda = new Lambda();
-import { createHandler, response } from "helpers";
 import { addNumbers } from "math";
 
 const invokeLambda = async (functionName: string, payload?: unknown) => {
@@ -25,5 +25,11 @@ export const handler = createHandler(async () => {
     pathParameters: { a: addNumbers(2, 3, 3, 3), b: addNumbers(3, 3, 3, 3) },
   });
 
-  return response(200, { operation: "get", sum: JSON.parse(res.body).result });
+  const notes = await db.prisma.note.findMany();
+
+  return response(200, {
+    operation: "get",
+    sum: JSON.parse(res.body).result,
+    notes,
+  });
 });

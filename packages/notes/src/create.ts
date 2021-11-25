@@ -1,27 +1,17 @@
 import type { APIGatewayProxyEvent } from "aws-lambda";
-import type { DBClient } from "helpers";
-import { response, createHandler, withDB } from "helpers";
+import { response, createHandler, database as db } from "helpers";
 import { validateBody } from "./validate";
 
-export async function createNote(db: DBClient, event: APIGatewayProxyEvent) {
+export async function createNote(event: APIGatewayProxyEvent) {
   const data = await validateBody(event.body);
 
-  const result = await db.query<{ id: string }>(
-    "INSERT INTO notes (title, description) VALUES ($1, $2) RETURNING id",
-    [data.title, data.description]
-  );
+  const result = await db.prisma.note.create({ data });
 
-  return {
-    id: result.rows[0]?.id,
-    ...data,
-    createdAt: new Date(),
-  };
+  return result;
 }
 
-export const handler = createHandler(
-  withDB(async (event, context) => {
-    const note = await createNote(context.db, event);
+export const handler = createHandler(async (event: APIGatewayProxyEvent) => {
+  const note = await createNote(event);
 
-    return response(201, note);
-  })
-);
+  return response(201, note);
+});

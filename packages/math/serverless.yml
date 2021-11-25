@@ -1,4 +1,5 @@
 service: math-api
+# variablesResolutionMode: 20210326
 
 projectDir: ../../
 

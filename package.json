@@ -17,8 +17,13 @@
     "localstack": "docker run --rm -it -e \"DEBUG=1\" -e \"SERVICES=cloudformation,swf,serverless\" -p 4566:4566 -p 4571:4571 localstack/localstack",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
     "eslint:check": "eslint '**/*.{t,j}s'",
-    "typecheck": "npx tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "prepare": "tsc -b tsconfig.build.json",
+    "prisma:generate": "prisma generate",
+    "prisma:pull": "prisma db pull",
+    "migration:create": "prisma migrate dev --create-only",
+    "migration:apply": "prisma migrate dev",
+    "migration:deploy": "prisma migrate deploy",
     "postinstall": "git config core.hooksPath ./.githooks"
   },
   "engines": {
@@ -45,6 +50,7 @@
     "jest": "^27.3.1",
     "lint-staged": "^12.1.2",
     "prettier": "^2.4.1",
+    "prisma": "^3.5.0",
     "serverless": "^2.65.0",
     "serverless-jetpack": "^0.11.1",
     "serverless-localstack": "^0.4.35",
@@ -63,6 +69,7 @@
     ]
   },
   "dependencies": {
+    "@prisma/client": "^3.5.0",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1026.0",
     "joi": "^17.4.2",

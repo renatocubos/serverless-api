@@ -1,4 +1,5 @@
 service: notes-api
+variablesResolutionMode: 20210326
 
 projectDir: ../../
 
@@ -16,6 +17,7 @@ package: ${file(../../globalConfig.yml):package}
 custom:
   jetpack: ${file(../../globalConfig.yml):jetpack}
   scriptHooks: ${file(../../globalConfig.yml):scriptHooks}
+  db: ${file(../../globalConfig.yml):database}
 
 provider:
   name: aws
@@ -39,6 +41,8 @@ provider:
     DB_PASSWORD: "postgres"
     DB_HOST: "postgres"
     DB_PORT: "5432"
+    DATABASE_URL: "postgresql://${self:custom.db.username}:${self:custom.db.password}@${self:custom.db.host}:${self:custom.db.port}/${self:custom.db.dbname}"
+    # DATABASE_URL: postgresql://database-1:B9A429B9FE1838E5.ccinczr4d92w.us-east-1.rds.amazonaws.com:5432/notesapp
 
 functions:
   create:

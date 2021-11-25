@@ -1,39 +1,24 @@
-import type { PoolClient } from "pg";
-import { Pool } from "pg";
+import { PrismaClient } from "@prisma/client";
 
-export type DBClient = PoolClient;
+export class Database {
+  private _prisma?: PrismaClient;
 
-export class Postgres {
-  private readonly pool: Pool;
-  private client?: PoolClient;
-
-  constructor() {
-    this.pool = new Pool({
-      max: 1,
-      min: 0,
-      idleTimeoutMillis: 120000,
-      connectionTimeoutMillis: 10000,
-    });
-
-    this.pool.on("error", err => {
-      console.error("Unexpected error on idle client", err);
-      process.exit(1);
-    });
+  setConnection(prisma: PrismaClient) {
+    this._prisma = prisma;
   }
 
-  async connect(): Promise<DBClient> {
-    this.client = await this.pool.connect();
-    return this.client;
-  }
-
-  release() {
-    if (this.client) {
-      this.client.release();
+  get prisma() {
+    if (this._prisma) {
+      return this._prisma;
     }
-  }
 
-  async end() {
-    this.release();
-    await this.pool.end();
+    throw new Error("Connetion not set");
   }
+}
+
+export const database = new Database();
+
+if (["dev", "prod"].includes(process.env.STAGE ?? "")) {
+  const client = new PrismaClient({ log: ["warn", "error"] });
+  database.setConnection(client);
 }

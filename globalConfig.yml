@@ -26,3 +26,5 @@ package:
     - "!../../node_modules/**/src/**"
     - "!**/**/node_modules/{@*/*,*}/*.md"
     - "build/*.js"
+
+database: ${ssm:/aws/reference/secretsmanager/DATABASE_SECRET}

@@ -20,12 +20,25 @@ jobs:
           node-version: "16"
       - run: npm ci
 
+      - name: Migrate DEV
+        if: github.ref == 'refs/heads/dev'
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_DEV }}
+
+      - name: Migrate PROD
+        if: github.ref == 'refs/heads/master'
+        run: npx prisma migrate deploy
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
+
       - name: Deploy DEV
         if: github.ref == 'refs/heads/dev'
         run: npm run deploy:all:dev
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_DEV }}
 
       - name: Deploy PROD
         if: github.ref == 'refs/heads/master'
@@ -33,3 +46,4 @@ jobs:
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL_PROD }}
