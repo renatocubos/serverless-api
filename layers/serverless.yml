@@ -10,6 +10,8 @@ custom:
     - "!**"
   collapsed:
     bail: true
+  scriptHook:
+    after:jetpack:package:package: mv ../node_modules/.prisma
 
 plugins:
   - serverless-jetpack
@@ -26,6 +28,13 @@ package:
     - "!../node_modules/**/src/**"
     - "!**/node_modules/{@*/*,*}/*.md"
     - "build/*.js"
+    - "!../node_modules/.prisma/client/libquery_engine-*"
+    - "nodejs/node_modules/.prisma/client/libquery_engine-rhel-*"
+    - "nodejs/node_modules/.prisma/client/index.js"
+    - "nodejs/node_modules/.prisma/client/package.json"
+    - "nodejs/node_modules/.prisma/client/schema.prisma"
+    - "!../node_modules/prisma/libquery_engine-*"
+    - "!../node_modules/@prisma/engines/**"
 
 provider:
   name: aws

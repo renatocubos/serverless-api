@@ -1,20 +1,17 @@
-import { randomUUID } from "crypto";
-import type { LambdaHandler } from "helpers";
-import { createHandler } from "helpers";
+import type { APIGatewayProxyEvent } from "aws-lambda";
+import { response, createHandler, database as db } from "helpers";
 import { validateBody } from "./validate";
 
-export const createNote: LambdaHandler = async (event) => {
-  const body = await validateBody(event.body);
+export async function createNote(event: APIGatewayProxyEvent) {
+  const data = await validateBody(event.body);
 
-  console.log("teste123");
-  return {
-    statusCode: 200,
-    body: JSON.stringify({
-      id: randomUUID(),
-      ...body,
-      createdAt: new Date(),
-    }),
-  };
-};
+  const result = await db.prisma.note.create({ data });
 
-export const handler = createHandler(createNote);
+  return result;
+}
+
+export const handler = createHandler(async (event: APIGatewayProxyEvent) => {
+  const note = await createNote(event);
+
+  return response(201, note);
+});

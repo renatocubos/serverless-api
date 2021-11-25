@@ -6,3 +6,5 @@ node_modules
 build
 tsconfig.tsbuildinfo
 layers/nodejs/package.json
+coverage
+.env

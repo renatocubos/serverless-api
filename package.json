@@ -4,21 +4,25 @@
   "description": "<!-- title: 'AWS Simple HTTP Endpoint example in NodeJS' description: 'This template demonstrates how to make a simple HTTP API with Node.js running on AWS Lambda and API Gateway using the Serverless Framework.' layout: Doc framework: v2 platform: AWS language: nodeJS authorLink: 'https://github.com/serverless' authorName: 'Serverless, inc.' authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4' -->",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --async-stack-traces node_modules/jest/bin/jest.js -w4",
     "layer:create": "node scripts/createLayer.js",
     "layer:deploy": "npm run layer:create && (cd layers && sls deploy)",
     "sls:package": "npm run sls:package -w",
-    "predeploy:dev": "npm run layer:deploy",
     "predeploy:all:dev": "npm run layer:deploy",
-    "deploy:prod": "npm run prepare && npm run deploy:prod -w",
-    "deploy:dev": "npm run prepare && npm run deploy:dev -w",
+    "deploy:prod": "npm run deploy:prod -w",
+    "deploy:dev": "npm run deploy:dev -w",
     "deploy:all:prod": "npm run deploy:prod --workspaces --if-present",
     "deploy:all:dev": "npm run deploy:dev --workspaces --if-present",
     "localstack": "docker run --rm -it -e \"DEBUG=1\" -e \"SERVICES=cloudformation,swf,serverless\" -p 4566:4566 -p 4571:4571 localstack/localstack",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
     "eslint:check": "eslint '**/*.{t,j}s'",
-    "typecheck": "npx tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "prepare": "tsc -b tsconfig.build.json",
+    "prisma:generate": "prisma generate",
+    "prisma:pull": "prisma db pull",
+    "migration:create": "prisma migrate dev --create-only",
+    "migration:apply": "prisma migrate dev",
+    "migration:deploy": "prisma migrate deploy",
     "postinstall": "git config core.hooksPath ./.githooks"
   },
   "engines": {
@@ -34,6 +38,7 @@
   ],
   "devDependencies": {
     "@types/aws-lambda": "^8.10.85",
+    "@types/jest": "^27.0.3",
     "@types/node": "^16.11.7",
     "@types/pg": "^8.6.1",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
@@ -41,8 +46,10 @@
     "eslint": "^8.2.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.3",
+    "jest": "^27.3.1",
     "lint-staged": "^12.1.2",
     "prettier": "^2.4.1",
+    "prisma": "^3.5.0",
     "serverless": "^2.65.0",
     "serverless-jetpack": "^0.11.1",
     "serverless-localstack": "^0.4.35",
@@ -50,6 +57,8 @@
     "serverless-plugin-reducer": "^3.2.4",
     "serverless-scriptable-plugin": "^1.2.2",
     "serverless-sequelize-migrations": "^1.1.1",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^10.4.0",
     "typescript": "4.2.4"
   },
   "lint-staged": {
@@ -59,6 +68,7 @@
     ]
   },
   "dependencies": {
+    "@prisma/client": "^3.5.0",
     "aws-lambda": "^1.0.7",
     "aws-sdk": "^2.1026.0",
     "joi": "^17.4.2",

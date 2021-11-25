@@ -1,3 +1,4 @@
+import { BadRequest } from "helpers";
 import Joi from "joi";
 import type { BaseNote } from "./note";
 
@@ -13,6 +14,10 @@ export async function validateBody(body: string | null) {
 
     return obj as BaseNote;
   } catch (error) {
-    throw new Error(error.message);
+    if (error instanceof Error) {
+      throw new BadRequest(error.message);
+    }
+
+    throw new BadRequest(JSON.stringify(error));
   }
 }

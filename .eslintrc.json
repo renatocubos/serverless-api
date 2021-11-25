@@ -22,7 +22,7 @@
     "no-var": "warn",
     "callback-return": "error",
     "linebreak-style": ["error", "unix"],
-    "quotes": ["error", "double"],
+    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
     "semi": ["error", "always"],
     "prefer-template": "error",
     "@typescript-eslint/no-duplicate-imports": "error",
