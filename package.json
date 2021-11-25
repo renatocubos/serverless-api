@@ -8,7 +8,6 @@
     "layer:create": "node scripts/createLayer.js",
     "layer:deploy": "npm run layer:create && (cd layers && sls deploy)",
     "sls:package": "npm run sls:package -w",
-    "predeploy:dev": "npm run layer:deploy",
     "predeploy:all:dev": "npm run layer:deploy",
     "deploy:prod": "npm run deploy:prod -w",
     "deploy:dev": "npm run deploy:dev -w",

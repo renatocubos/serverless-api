@@ -25,9 +25,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   lambdaHashingVersion: 20201221
   region: ${opt:region, 'us-east-1'}
-  memorySize: 128
   versionFunctions: false
-  timeout: 3
+  timeout: 10
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -42,7 +41,6 @@ provider:
     DB_HOST: "postgres"
     DB_PORT: "5432"
     DATABASE_URL: "postgresql://${self:custom.db.username}:${self:custom.db.password}@${self:custom.db.host}:${self:custom.db.port}/${self:custom.db.dbname}"
-    # DATABASE_URL: postgresql://database-1:B9A429B9FE1838E5.ccinczr4d92w.us-east-1.rds.amazonaws.com:5432/notesapp
 
 functions:
   create:

@@ -24,9 +24,8 @@ provider:
   stage: ${opt:stage, 'dev'}
   lambdaHashingVersion: 20201221
   region: ${opt:region, 'us-east-1'}
-  memorySize: 128
   versionFunctions: false
-  timeout: 3
+  timeout: 10
 
 functions:
   sum:

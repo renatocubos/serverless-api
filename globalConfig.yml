@@ -23,8 +23,7 @@ package:
     - "!**/node_modules/aws-sdk/**"
     - "!../../node_modules/**/*.ts"
     - "!../../node_modules/**/.serverless/**"
-    - "!../../node_modules/**/src/**"
     - "!**/**/node_modules/{@*/*,*}/*.md"
-    - "build/*.js"
+    - "build/**/*.js"
 
 database: ${ssm:/aws/reference/secretsmanager/DATABASE_SECRET}
