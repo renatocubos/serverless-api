@@ -10,4 +10,36 @@ describe("Notes", () => {
     expect(note.title).toBe("Title");
     expect(note.description).toBe("description");
   });
+  it("Should create note", async () => {
+    const note = await createNote(
+      mockEvent({ title: "Title", description: "description" })
+    );
+
+    expect(note.title).toBe("Title");
+    expect(note.description).toBe("description");
+  });
+  it("Should create note", async () => {
+    const note = await createNote(
+      mockEvent({ title: "Title", description: "description" })
+    );
+
+    expect(note.title).toBe("Title");
+    expect(note.description).toBe("description");
+  });
+  it("Should create note", async () => {
+    const note = await createNote(
+      mockEvent({ title: "Title", description: "description" })
+    );
+
+    expect(note.title).toBe("Title");
+    expect(note.description).toBe("description");
+  });
+  it("Should create note", async () => {
+    const note = await createNote(
+      mockEvent({ title: "Title", description: "description" })
+    );
+
+    expect(note.title).toBe("Title");
+    expect(note.description).toBe("description");
+  });
 });
