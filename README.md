@@ -7,8 +7,24 @@ This is a serverless framework monorepo
 Install dependencies:
 
 ```bash
-npm run dev
+npm ci
 ```
+
+### Migrating from existing database
+
+First connect to the database by setting the DATABASE_URL environment variable and run:
+
+```bash
+npm run prisma:pull
+```
+
+After that, update the **prisma.schema** file as you wish and generate a new client:
+
+```bash
+npm run prisma:generate
+```
+
+### Deployment
 
 Deploy service to stage "dev":
 
